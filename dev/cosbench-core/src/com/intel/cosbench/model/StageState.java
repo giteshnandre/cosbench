@@ -23,6 +23,8 @@ public enum StageState {
 
     WAITING,
 
+    SLEEPING,
+    
     BOOTING,
 
     SUBMITTING,

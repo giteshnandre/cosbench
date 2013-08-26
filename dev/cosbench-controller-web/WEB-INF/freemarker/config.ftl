@@ -4,18 +4,6 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" type="text/css" href="resources/cosbench.css" />
   <title>Workload Configuration</title>
-  <script>
-	  function toggleDiv(id)
-		{
-			divElement = document.getElementById(id);
-			if(divElement.style.display == 'none'){
-				divElement.style.display = '';
-			}else {
-				divElement.style.display = 'none';
-			}
-			return false;
-		}
-  </script>
 </head>
 <body>
 <#include "header.ftl">
@@ -107,7 +95,7 @@
 			<h3>Workflow</h3>
 			
 			<div id="init" class="a2">
-					<input type="checkbox" name="init.checked" checked="checked" onClick="toggleDiv('init.work');"><strong> Init Stage: </strong>
+					<input type="checkbox" id="init.checked" name="init.checked" checked="checked" onClick="toggleStageDiv(0,this.parentNode);"><strong> Init Stage: </strong>
 				
 				<div id="init.work" class="a3">
 						<table class="info-table">
@@ -132,10 +120,30 @@
 							</tbody>
 						</table>
 				</div>
+				<div id="init.delay" class="a2">
+					<input type="checkbox" name="init.delay.checked"  onClick="toggleDiv(document.getElementById('init.delay.work'));"><strong> Delay: </strong>
+				
+					<div id="init.delay.work" class="a3" style="display:none">
+						<table class="info-table">
+							<thead>
+								<th>closuredelay</th>
+							</thead>
+							
+							<tbody>
+								<tr>
+									<td>
+										<input name="init.delay.closuredelay" type="number" style="width:30px" value="60"/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
+			<input type="button" id="addinit" value="Add Init Stage" onClick="addStage(0);" />
 			
 			<div id="prepare" class="a2">
-					<input type="checkbox" name="prepare.checked" checked="checked" onClick="toggleDiv('prepare.work');"><strong> Prepare Stage:</strong>
+				<input type="checkbox" id="prepare.checked" name="prepare.checked" checked="checked" onClick="toggleStageDiv(1,this.parentNode);"><strong> Prepare Stage:</strong>
 				
 				<div id="prepare.work" class="a3">
 						<table class="info-table">
@@ -180,10 +188,30 @@
 							</tbody>							
 						</table>
 				</div>
+				<div id="prepare.delay" class="a2">
+					<input type="checkbox" name="prepare.delay.checked"  onClick="toggleDiv(document.getElementById('prepare.delay.work'));"><strong> Delay: </strong>
+				
+					<div id="prepare.delay.work" class="a3" style="display:none">
+						<table class="info-table">
+							<thead>
+								<th>closuredelay</th>
+							</thead>
+							
+							<tbody>
+								<tr>
+									<td>
+										<input name="prepare.delay.closuredelay" type="number" style="width:30px" value="60"/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
+			<input type="button" id="addprepare" value="Add Prepare Stage" onClick="addStage(1);" /> 
 			
 			<div id="normal" class="a2">
-					<input type="checkbox" name="normal.checked" checked="checked" onClick="toggleDiv('normal.work');"><strong> Main Stage:</strong>
+				<input type="checkbox" id="normal.checked" name="normal.checked" checked="checked" onClick="toggleStageDiv(2,this.parentNode);"><strong> Main Stage:</strong>
 				
 				<div id="normal.work" class="a3">
 						<table class="info-table">
@@ -267,6 +295,28 @@
 										</td>															
 									</tr>
 									<tr>
+                                        <td>File-Write</td>
+                                        <td>
+                                            <input type="number" name="filewrite.ratio" style="width:30px" value="0" />
+                                        </td>
+                                        <td>
+                                            <select name="filewrite.containers" hidden="true">
+                                                <option value="u" selected="true">Uniform</option>
+                                            </select>
+                                            <input type="number" name="filewrite.containers.min" style="width:30px" value="1" />-
+                                            <input type="number" name="filewrite.containers.max" style="width:30px" value="32" />
+                                        </td>
+                                        <td>
+                                            <select name="filewrite.fileselection" hidden="true">
+                                                <option value="s" selected="true">Uniform</option>
+                                            </select>
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <input name="filewrite.files" type="text" style="width:100px" value="/tmp/testfiles/" />
+                                        </td>
+                                    </tr> 
+									<tr>
 										<td >Delete</td>
 										<td ><input type="number" name="delete.ratio" style="width:30px" value="0"/> </td>
 										<td >
@@ -288,10 +338,30 @@
 						</p>
 					</div>
 				</div>
+				<div id="normal.delay" class="a2">
+					<input type="checkbox" name="normal.delay.checked"  onClick="toggleDiv(document.getElementById('normal.delay.work'));"><strong> Delay: </strong>
+				
+					<div id="normal.delay.work" class="a3" style="display:none">
+						<table class="info-table">
+							<thead>
+								<th>closuredelay</th>
+							</thead>
+							
+							<tbody>
+								<tr>
+									<td>
+										<input name="normal.delay.closuredelay" type="number" style="width:30px" value="60"/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
+			<input type="button" id="addnormal" value="Add Main Stage" onClick="addStage(2);" />
 			
 			<div id="cleanup" class="a2">
-					<input type="checkbox" name="cleanup.checked" checked="checked" onClick="toggleDiv('cleanup.work');"><strong> Cleanup Stage:</strong>
+					<input type="checkbox" id="cleanup.checked" name="cleanup.checked" checked="checked" onClick="toggleStageDiv(3,this.parentNode);"><strong> Cleanup Stage:</strong>
 				
 				<div id="cleanup.work" class="a3">
 						<table class="info-table">
@@ -324,10 +394,30 @@
 							</tbody>							
 						</table>
 				</div>
+				<div id="cleanup.delay" class="a2">
+					<input type="checkbox" name="cleanup.delay.checked"  onClick="toggleDiv(document.getElementById('cleanup.delay.work'));"><strong> Delay: </strong>
+				
+					<div id="cleanup.delay.work" class="a3" style="display:none">
+						<table class="info-table">
+							<thead>
+								<th>closuredelay</th>
+							</thead>
+							
+							<tbody>
+								<tr>
+									<td>
+										<input name="cleanup.delay.closuredelay" type="number" style="width:30px" value="60"/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
+			<input type="button" id="addcleanup" value="Add Cleanup Stage" onClick="addStage(3);" /> 
 			
 			<div id="dispose" class="a2">
-					<input type="checkbox" name="dispose.checked" checked="checked" onClick="toggleDiv('dispose.work');"><strong> Dispose Stage:</strong>
+					<input type="checkbox" id="dispose.checked" name="dispose.checked" checked="checked" onClick="toggleStageDiv(4,this.parentNode);"><strong> Dispose Stage:</strong>
 				
 				<div id="dispose.work" class="a3">
 						<table class="info-table">
@@ -351,9 +441,29 @@
 							</tbody>
 						</table>
 				</div>
+				<div id="dispose.delay" class="a2">
+					<input type="checkbox" name="dispose.delay.checked"  onClick="toggleDiv(document.getElementById('dispose.delay.work'));"><strong> Delay: </strong>
+				
+					<div id="dispose.delay.work" class="a3" style="display:none">
+						<table class="info-table">
+							<thead>
+								<th>closuredelay</th>
+							</thead>
+							
+							<tbody>
+								<tr>
+									<td>
+										<input name="dispose.delay.closuredelay" type="number" style="width:30px" value="60"/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
+			<input type="button" id="adddispose" value="Add Dispose Stage" onClick="addStage(4);" />
 		</div>
-		
+		 
 		<div class="a1">
 			<input type="submit" value="Generate Configuration File">
 		</div>
@@ -365,5 +475,68 @@
 <div class="bottom"><br /></div>
 </div> <#-- end of main -->
 <#include "footer.ftl">
+<script>
+    var numOfClones = 0;
+    var numOfClonesInStage = new Array(5);
+    var previousDivs = 
+    {
+		'0' : document.getElementById("init"),
+		'1' : document.getElementById("prepare"),
+		'2' : document.getElementById("normal"),
+		'3' : document.getElementById("cleanup"),
+		'4' : document.getElementById("dispose")
+    };
+
+    for(var i=0 ; i<5 ; i++)
+    {
+       numOfClonesInStage[i]=0;   
+    }
+    
+    function toggleDiv(id) 
+    {
+        if (typeof(id) == "string")
+            divElement = document.getElementById(id);
+        else
+            divElement = id;
+        
+        if (divElement.style.display == 'none') 
+        {
+            divElement.style.display = '';
+        } 
+        else 
+        {
+            divElement.style.display = 'none';
+        }
+        return false;
+    }
+    
+    function toggleStageDiv(stageNum,stageDiv) 
+    {
+        if (numOfClonesInStage[stageNum] == 0) 
+        {
+            toggleDiv(stageDiv.id + '.work');
+            toggleDiv(stageDiv.id + '.delay');
+            return;
+        }
+        if (stageDiv.nextElementSibling.id == 'add' + stageDiv.id) 
+        {
+            previousDivs[stageNum] = stageDiv.previousElementSibling;
+		}
+        numOfClonesInStage[stageNum]--;
+        stageDiv.parentNode.removeChild(stageDiv);
+    }
+    
+    function addStage(stageNum) 
+    {
+        if (numOfClonesInStage[stageNum] == 0 && document.getElementById(previousDivs[stageNum].id + '.checked').checked == false) 
+        {
+            return;
+        }
+        var cloneDiv = previousDivs[stageNum].cloneNode(true);
+        previousDivs[stageNum].parentNode.insertBefore(cloneDiv, previousDivs[stageNum].nextElementSibling);
+        numOfClonesInStage[stageNum]++;
+        previousDivs[stageNum] = cloneDiv;
+    }
+</script>
 </body>  
 </html>
