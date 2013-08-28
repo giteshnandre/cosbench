@@ -158,16 +158,34 @@ class WorkloadProcessor {
 
     private void runStage(StageContext stageContext) throws InterruptedException {
         String id = stageContext.getId();
-        int closuredelay = stageContext.getStage().getClosuredelay(); 
-        LOGGER.info("begin to run stage {}", id);
+        int closuredelay = stageContext.getStage().getClosuredelay();
+        
         workloadContext.setCurrentStage(stageContext);
-		if (stageContext.getStage().getName().equals("delay") && closuredelay > 0) {
+        String stageName = stageContext.getStage().getName();
+        String work0Type = stageContext.getStage().getWorks().get(0).getType();
+        
+        LOGGER.info("begin to run stage {}", id);
+        
+        if (work0Type.equals("normal")) {
+        	LOGGER.info("============================================");
+	        LOGGER.info("WORKLOAD:  {}", stageName);
+	        LOGGER.info("STARTTEST");
+        }
+		
+        if (stageName.equals("delay") && closuredelay > 0) {
 			executeDelay(stageContext, closuredelay);
 		} else {
 			executeStage(stageContext);
 			if(closuredelay > 0)
 			executeDelay(stageContext, closuredelay);
 		}
+        
+        if (work0Type.equals("normal")) {
+	        LOGGER.info("ENDTEST");
+        	LOGGER.info("============================================");
+        	LOGGER.info("");
+        }
+        
         LOGGER.info("successfully ran stage {}", id);
     }
 
