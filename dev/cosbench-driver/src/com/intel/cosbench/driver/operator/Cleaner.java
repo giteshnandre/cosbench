@@ -102,6 +102,8 @@ class Cleaner extends AbstractOperator {
         } catch (StorageInterruptedException sie) {
             throw new AbortedException();
         } catch (StorageException se) {
+        	String msg = "Error deleting container " +  conName; 
+            doLogWarn(session.getLogger(), msg);
             // ignored
         } catch (Exception e) {
             doLogErr(session.getLogger(), "fail to perform clean operation", e);

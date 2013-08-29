@@ -75,7 +75,8 @@ class Deleter extends AbstractOperator {
         } catch (StorageInterruptedException sie) {
             throw new AbortedException();
         } catch (StorageException se) {
-            // ignored
+        	String msg = "Error deleting object " +  conName + ": " + objName; 
+            doLogWarn(session.getLogger(), msg);
         } catch (Exception e) {
             doLogErr(session.getLogger(), "fail to perform remove operation", e);
             return new Sample(new Date(), OP_TYPE, false);
