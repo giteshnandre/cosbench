@@ -18,6 +18,7 @@ limitations under the License.
 package com.intel.cosbench.controller.service;
 
 import static com.intel.cosbench.model.WorkloadState.*;
+import static java.util.concurrent.TimeUnit.*;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -155,6 +156,15 @@ class WorkloadProcessor {
 		}
         workloadContext.setState(FINISHED);
     }
+    
+    private static String millisToHMS(long millis) {
+
+        long hrs = MILLISECONDS.toHours(millis) % 24;
+        long min = MILLISECONDS.toMinutes(millis) % 60;
+        long sec = MILLISECONDS.toSeconds(millis) % 60;
+
+        return hrs + ":" + min + "::" + sec;
+    }
 
     private void runStage(StageContext stageContext) throws InterruptedException {
         String id = stageContext.getId();
@@ -166,25 +176,25 @@ class WorkloadProcessor {
         
         LOGGER.info("begin to run stage {}", id);
         
-        if (work0Type.equals("normal")) {
-        	LOGGER.info("============================================");
-	        LOGGER.info("WORKLOAD:  {}", stageName);
-	        LOGGER.info("STARTTEST");
-        }
+       	LOGGER.info("============================================");
+        LOGGER.info("START WORK: {}", stageName);
 		
+        long startStamp = System.currentTimeMillis();
+        
         if (stageName.equals("delay") && closuredelay > 0) {
 			executeDelay(stageContext, closuredelay);
 		} else {
 			executeStage(stageContext);
-			if(closuredelay > 0)
-			executeDelay(stageContext, closuredelay);
-		}
-        
-        if (work0Type.equals("normal")) {
-	        LOGGER.info("ENDTEST");
+			
+			long elapsedTime = System.currentTimeMillis() - startStamp;
+			
+        	LOGGER.info("END WORK:   {}, Time elapsed: {}", stageName, millisToHMS(elapsedTime));
         	LOGGER.info("============================================");
         	LOGGER.info("");
-        }
+        
+			if(closuredelay > 0)
+				executeDelay(stageContext, closuredelay);
+		}
         
         LOGGER.info("successfully ran stage {}", id);
     }
