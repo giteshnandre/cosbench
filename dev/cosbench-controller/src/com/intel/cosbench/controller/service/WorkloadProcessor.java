@@ -163,7 +163,7 @@ class WorkloadProcessor {
         long min = MILLISECONDS.toMinutes(millis) % 60;
         long sec = MILLISECONDS.toSeconds(millis) % 60;
 
-        return hrs + ":" + min + "::" + sec;
+        return String.format("%d:%02d.%02d", hrs, min, sec);
     }
 
     private void runStage(StageContext stageContext) throws InterruptedException {
