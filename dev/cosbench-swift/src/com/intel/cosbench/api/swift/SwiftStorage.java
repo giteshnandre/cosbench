@@ -77,6 +77,19 @@ class SwiftStorage extends NoneStorage {
         }
         logger.debug("using auth token: {}, storage url: {}", token, url);
     }
+    
+    @Override
+    public AuthContext getAuthContext() {
+    	String token = client.getAuthToken();
+    	String url = client.getStorageURL();
+    	
+    	AuthContext info = new AuthContext();
+    	info.put(AUTH_TOKEN_KEY, token);
+    	info.put(STORAGE_URL_KEY, url);
+        
+    	logger.debug("returned auth token: {}, storage url: {}", token, url);
+    	return info;
+    }
 
     @Override
     public void dispose() {
