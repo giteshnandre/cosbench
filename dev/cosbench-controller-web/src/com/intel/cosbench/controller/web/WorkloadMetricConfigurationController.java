@@ -9,9 +9,6 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
-import com.intel.cosbench.config.Workload;
-import com.intel.cosbench.config.castor.CastorConfigTools;
-import com.intel.cosbench.controller.web.WorkloadMetricConfigurationController.TXTView;
 import com.intel.cosbench.service.ControllerService;
 import com.intel.cosbench.web.AbstractController;
 
@@ -51,34 +48,36 @@ public class WorkloadMetricConfigurationController extends AbstractController {
     protected ModelAndView process(HttpServletRequest req,
             HttpServletResponse res) {
         
-    	WorkloadMetric workloadMetric = null;
     	String txt = "";
     	
         try {
-            workloadMetric = constructWorkloadMetricFromPostData(req);             
-        	txt =  CastorConfigTools.getWorkloadWriter().toXmlString(workloadMetric);
+            txt = constructWorkloadConfigsFromPostData(req);             
 
         } catch (Exception e) {
+        	e.printStackTrace();
             return createErrResult(txt, e.getMessage());
         }
 
         return createSuccResult(txt);
     }
 
-	private WorkloadMetric constructWorkloadMetricFromPostData(HttpServletRequest req) {
+	private String constructWorkloadConfigsFromPostData(HttpServletRequest req) {
 		
-		return null;
+		WorkloadConfigGenerator wlConfGen = new WorkloadConfigGenerator(controller);
+		wlConfGen.createWorkloadFiles(req);
+		return "string";
+		
 	}
 	
 	 private ModelAndView createErrResult(String txt, String msg) {
-	        ModelAndView result = new ModelAndView("config", "xml", txt);
+	        ModelAndView result = new ModelAndView("advanced-config", "txt", txt);
 	        result.addObject("error", "ERROR: " + msg);
 	        
 	        return result;
 	    }
 
 	    private ModelAndView createSuccResult(String txt) {    	
-	        ModelAndView result = new ModelAndView(TXT, "xml", txt);
+	        ModelAndView result = new ModelAndView("advanced-config");
 
 	        return result;
 	    }

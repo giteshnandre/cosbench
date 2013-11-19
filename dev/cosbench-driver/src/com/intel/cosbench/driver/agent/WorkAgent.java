@@ -27,6 +27,7 @@ import com.intel.cosbench.config.Mission;
 import com.intel.cosbench.driver.model.*;
 import com.intel.cosbench.driver.operator.*;
 import com.intel.cosbench.driver.util.OperationPicker;
+import com.intel.cosbench.log.LogFactory;
 import com.intel.cosbench.log.Logger;
 import com.intel.cosbench.service.AbortedException;
 
@@ -244,6 +245,8 @@ class WorkAgent extends AbstractAgent implements Session, OperationListener {
         int sum = 0;
         for (Mark mark : globalMarks)
             sum += mark.getTotalOpCount();
+        Logger logger = LogFactory.getSystemLogger();
+        logger.info("{total operation counts} : "+sum);
         return sum;
     }
 
