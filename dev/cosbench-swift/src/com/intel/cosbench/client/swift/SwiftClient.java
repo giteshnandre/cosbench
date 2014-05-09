@@ -28,6 +28,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.*;
 
+import com.intel.cosbench.api.auth.NoneAuth;
 import com.intel.cosbench.client.http.HttpClientUtil;
 import com.intel.cosbench.log.*;
 
@@ -86,6 +87,10 @@ public class SwiftClient {
                 int containerCount = response.getAccountContainerCount();
                 return new SwiftAccount(bytesUsed, containerCount);
             }
+            if (response.getStatusCode() == SC_UNAUTHORIZED) {
+                throw new SwiftException("Unauthorized",
+                        response.getResponseHeaders(), response.getStatusLine());
+            }
             throw new SwiftException("unexpected return from server",
                     response.getResponseHeaders(), response.getStatusLine());
         } finally {
@@ -110,6 +115,10 @@ public class SwiftClient {
                 throw new SwiftFileNotFoundException("container not found: "
                         + container, response.getResponseHeaders(),
                         response.getStatusLine());
+            if (response.getStatusCode() == SC_UNAUTHORIZED) {
+                throw new SwiftException("Unauthorized",
+                        response.getResponseHeaders(), response.getStatusLine());
+            }
             throw new SwiftException("unexpected return from server",
                     response.getResponseHeaders(), response.getStatusLine());
         } finally {
@@ -138,6 +147,10 @@ public class SwiftClient {
 		logger.info("SUCCESS");
                 return;
             }
+            if (response.getStatusCode() == SC_UNAUTHORIZED) {
+                throw new SwiftException("Unauthorized",
+                        response.getResponseHeaders(), response.getStatusLine());
+            }
             throw new SwiftException("unexpected return from server",
                     response.getResponseHeaders(), response.getStatusLine());
         } finally {
@@ -163,6 +176,10 @@ public class SwiftClient {
                 throw new SwiftConflictException(
                         "cannot delete an non-empty container",
                         response.getResponseHeaders(), response.getStatusLine());
+            if (response.getStatusCode() == SC_UNAUTHORIZED) {
+                throw new SwiftException("Unauthorized",
+                        response.getResponseHeaders(), response.getStatusLine());
+            }
             throw new SwiftException("unexpected return from server",
                     response.getResponseHeaders(), response.getStatusLine());
         } finally {
@@ -183,6 +200,10 @@ public class SwiftClient {
             throw new SwiftFileNotFoundException("object not found: "
                     + container + "/" + object, response.getResponseHeaders(),
                     response.getStatusLine());
+        if (response.getStatusCode() == SC_UNAUTHORIZED) {
+            throw new SwiftException("Unauthorized",
+                    response.getResponseHeaders(), response.getStatusLine());
+        }
         throw new SwiftException("unexpected result from server",
                 response.getResponseHeaders(), response.getStatusLine());
     }
@@ -206,6 +227,10 @@ public class SwiftClient {
                 throw new SwiftFileNotFoundException("container not found: "
                         + container, response.getResponseHeaders(),
                         response.getStatusLine());
+            if (response.getStatusCode() == SC_UNAUTHORIZED) {
+                throw new SwiftException("Unauthorized",
+                        response.getResponseHeaders(), response.getStatusLine());
+            }
             throw new SwiftException("unexpected return from server",
                     response.getResponseHeaders(), response.getStatusLine());
         } finally {
@@ -236,6 +261,10 @@ public class SwiftClient {
                 throw new SwiftFileNotFoundException("container not found: "
                         + container, response.getResponseHeaders(),
                         response.getStatusLine());
+            if (response.getStatusCode() == SC_UNAUTHORIZED) {
+                throw new SwiftException("Unauthorized",
+                        response.getResponseHeaders(), response.getStatusLine());
+            }
             throw new SwiftException("unexpected return from server",
                     response.getResponseHeaders(), response.getStatusLine());
         } finally {
@@ -259,6 +288,10 @@ public class SwiftClient {
                 throw new SwiftFileNotFoundException("object not found: "
                         + container + "/" + object,
                         response.getResponseHeaders(), response.getStatusLine());
+            if (response.getStatusCode() == SC_UNAUTHORIZED) {
+                throw new SwiftException("Unauthorized",
+                        response.getResponseHeaders(), response.getStatusLine());
+            }
             throw new SwiftException("unexpected return from server",
                     response.getResponseHeaders(), response.getStatusLine());
         } finally {
@@ -282,6 +315,10 @@ public class SwiftClient {
                 throw new SwiftFileNotFoundException("object not found: "
                         + container + "/" + object,
                         response.getResponseHeaders(), response.getStatusLine());
+            if (response.getStatusCode() == SC_UNAUTHORIZED) {
+                throw new SwiftException("Unauthorized",
+                        response.getResponseHeaders(), response.getStatusLine());
+            }
             throw new SwiftException("unexpected return from server",
                     response.getResponseHeaders(), response.getStatusLine());
         } finally {
@@ -308,6 +345,10 @@ public class SwiftClient {
                 throw new SwiftFileNotFoundException("object not found: "
                         + container + "/" + object,
                         response.getResponseHeaders(), response.getStatusLine());
+            if (response.getStatusCode() == SC_UNAUTHORIZED) {
+                throw new SwiftException("Unauthorized",
+                        response.getResponseHeaders(), response.getStatusLine());
+            }
             throw new SwiftException("unexpected result from server",
                     response.getResponseHeaders(), response.getStatusLine());
         } finally {

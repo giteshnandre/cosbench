@@ -29,6 +29,7 @@ import org.apache.http.conn.ConnectTimeoutException;
 import com.intel.cosbench.api.context.AuthContext;
 import com.intel.cosbench.api.storage.*;
 import com.intel.cosbench.client.http.HttpClientUtil;
+import com.intel.cosbench.client.swauth.utils.SwiftTokenCacheImpl;
 import com.intel.cosbench.client.swift.*;
 import com.intel.cosbench.config.Config;
 import com.intel.cosbench.log.Logger;
@@ -135,8 +136,15 @@ class SwiftStorage extends NoneStorage {
         } catch (InterruptedIOException ie) {
             throw new StorageInterruptedException(ie);
         } catch (SwiftException se) {
-            String msg = se.getHttpStatusLine().toString();
-            throw new StorageException(msg, se);
+        	 if(se.getMessage().equalsIgnoreCase("Unauthorized"))
+             {
+             	SwiftTokenCacheImpl.loadSwiftTokenCache(client, currentTokenCache);
+             }
+             else
+         	{
+            	 String msg = se.getHttpStatusLine().toString();
+            	 throw new StorageException(msg, se);
+         	}
         } catch (Exception e) {
             throw new StorageException(e);
         }
@@ -156,8 +164,15 @@ class SwiftStorage extends NoneStorage {
         } catch (InterruptedIOException ie) {
             throw new StorageInterruptedException(ie);
         } catch (SwiftException se) {
-            String msg = se.getHttpStatusLine().toString();
-            throw new StorageException(msg, se);
+        	 if(se.getMessage().equalsIgnoreCase("Unauthorized"))
+             {
+             	SwiftTokenCacheImpl.loadSwiftTokenCache(client, currentTokenCache);
+             }
+             else
+         	{
+            	 String msg = se.getHttpStatusLine().toString();
+            	 throw new StorageException(msg, se);
+         	}
         } catch (Exception e) {
             throw new StorageException(e);
         }
@@ -176,8 +191,15 @@ class SwiftStorage extends NoneStorage {
         } catch (InterruptedIOException ie) {
             throw new StorageInterruptedException(ie);
         } catch (SwiftException se) {
-            String msg = se.getHttpStatusLine().toString();
-            throw new StorageException(msg, se);
+        	 if(se.getMessage().equalsIgnoreCase("Unauthorized"))
+             {
+             	SwiftTokenCacheImpl.loadSwiftTokenCache(client, currentTokenCache);
+             }
+             else
+         	{
+            	 String msg = se.getHttpStatusLine().toString();
+            	 throw new StorageException(msg, se);
+         	}
         } catch (Exception e) {
             throw new StorageException(e);
         }
@@ -196,8 +218,15 @@ class SwiftStorage extends NoneStorage {
         } catch (InterruptedIOException ie) {
             throw new StorageInterruptedException(ie);
         } catch (SwiftException se) {
-            String msg = se.getHttpStatusLine().toString();
-            throw new StorageException(msg, se);
+        	 if(se.getMessage().equalsIgnoreCase("Unauthorized"))
+             {
+             	SwiftTokenCacheImpl.loadSwiftTokenCache(client, currentTokenCache);
+             }
+             else
+         	{
+            	 String msg = se.getHttpStatusLine().toString();
+            	 throw new StorageException(msg, se);
+         	}
         } catch (Exception e) {
             throw new StorageException(e);
         }
@@ -216,9 +245,16 @@ class SwiftStorage extends NoneStorage {
         } catch (InterruptedIOException ie) {
             throw new StorageInterruptedException(ie);
         } catch (SwiftException se) {
-            String msg = se.getHttpStatusLine().toString();
-            throw new StorageException(msg, se);
-        } catch (Exception e) {
+            if(se.getMessage().equalsIgnoreCase("Unauthorized"))
+            {
+            	SwiftTokenCacheImpl.loadSwiftTokenCache(client, currentTokenCache);
+            }
+            else
+        	{
+            	String msg = se.getHttpStatusLine().toString();
+            	throw new StorageException(msg, se);
+        	}
+        }catch (Exception e) {
             throw new StorageException(e);
         }
     }
@@ -235,8 +271,15 @@ class SwiftStorage extends NoneStorage {
         } catch (InterruptedIOException ie) {
             throw new StorageInterruptedException(ie);
         } catch (SwiftException se) {
-            String msg = se.getHttpStatusLine().toString();
-            throw new StorageException(msg, se);
+        	 if(se.getMessage().equalsIgnoreCase("Unauthorized"))
+             {
+             	SwiftTokenCacheImpl.loadSwiftTokenCache(client, currentTokenCache);
+             }
+             else
+         	{
+            	 String msg = se.getHttpStatusLine().toString();
+            	 throw new StorageException(msg, se);
+         	}
         } catch (Exception e) {
             throw new StorageException(e);
         }
@@ -255,8 +298,15 @@ class SwiftStorage extends NoneStorage {
         } catch (InterruptedIOException ie) {
             throw new StorageInterruptedException(ie);
         } catch (SwiftException se) {
-            String msg = se.getHttpStatusLine().toString();
-            throw new StorageException(msg, se);
+        	 if(se.getMessage().equalsIgnoreCase("Unauthorized"))
+             {
+             	SwiftTokenCacheImpl.loadSwiftTokenCache(client, currentTokenCache);
+             }
+             else
+         	{
+            	 String msg = se.getHttpStatusLine().toString();
+            	 throw new StorageException(msg, se);
+         	}
         } catch (Exception e) {
             throw new StorageException(e);
         }
@@ -275,8 +325,15 @@ class SwiftStorage extends NoneStorage {
         } catch (InterruptedIOException ie) {
             throw new StorageInterruptedException(ie);
         } catch (SwiftException se) {
-            String msg = se.getHttpStatusLine().toString();
-            throw new StorageException(msg, se);
+        	 if(se.getMessage().equalsIgnoreCase("Unauthorized"))
+             {
+             	SwiftTokenCacheImpl.loadSwiftTokenCache(client, currentTokenCache);
+             }
+             else
+         	{
+            	 String msg = se.getHttpStatusLine().toString();
+            	 throw new StorageException(msg, se);
+         	}
         } catch (Exception e) {
             throw new StorageException(e);
         }
